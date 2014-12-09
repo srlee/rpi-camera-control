@@ -1,0 +1,29 @@
+#!/bin/bash
+#
+#  Raspberry Pi Camera Control Software
+#  Copyright (C) 2014 Cansel Software Limited
+#
+#   This program is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation, either version 3 of the License, or
+#    any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#
+#
+#if script is running don't run it again
+running=$(ps -ef | grep -v grep | grep upcloud)
+
+if [ -z "$running"  ]; then
+    /usr/local/bin/upcloud
+else
+    exit 0
+fi
+

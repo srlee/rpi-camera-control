@@ -1,0 +1,8 @@
+Package: CanselCamera
+Version: 1.0.79
+Section: base
+Priority: optional
+Architecture: all
+Depends: apache2, php5, mencoder, usbmount, imagemagick, php5-curl
+Maintainer: Cansel Software Limited <support@canselsoftware.com>
+Description: Camera Software for the Raspberry Pi

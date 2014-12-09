@@ -1,0 +1,103 @@
+/*
+ *  Commun style
+ */
+
+body {
+  background: #303130;
+}
+#content {
+  background: #fff;
+  padding: 2px 2px;
+}
+.container, .navbar .container {
+  max-width: 700px;
+}
+
+.center {
+  text-align: center;
+}
+
+header h1 {
+  text-align:center;
+}
+
+
+/*
+ * Pages
+ */
+
+.form-login {
+  margin: 20px 0 50px 0;
+}
+.form-login input {
+  margin-bottom: 5px;
+}
+
+.details table {
+  width: 100%;
+}
+.details tr {
+  vertical-align: top;
+}
+.details td {
+  padding: 20px 0;
+}
+.details td.check {
+  font-weight: bold;
+  min-width: 100px;
+}
+.details td.icon {
+  min-width: 25px;
+  padding-left: 10px;
+  padding-right: 20px;
+}
+.details .storage td {
+  padding: 15px 0;
+}
+
+.details .progress {
+  margin-bottom: 8px;
+}
+.details .storage .progress {
+  margin-top: 10px;
+}
+
+.rapid-status div {
+  margin-top: 20px;
+}
+.infos div {
+  margin-bottom: 20px;
+}
+
+.services td.check {
+  width: 125px;
+}
+.services td.icon {
+  width: 60px;
+}
+
+.disks td.check {
+  width: 125px;
+}
+.disks td.icon {
+  width: 60px;
+}
+
+/*
+ * Bootstrap override
+ */
+.popover {
+	width: 650px;
+	max-width: 650px;
+}
+.infos div .popover-content {
+	margin-bottom: 0px;
+}
+.popover-content table {
+	margin-bottom: 0px;
+}
+
+#passchange {
+  padding:5px;
+}
+

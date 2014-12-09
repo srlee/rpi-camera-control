@@ -1,0 +1,40 @@
+#!/bin/bash
+# /etc/init.d/cansel-camera
+
+### BEGIN INIT INFO
+# Provides:          cansel_camera
+# Required-Start:    $network
+# Required-Stop:     $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: cansel camera 
+# Description:       This service is used to start and stop the cansel camera 
+### END INIT INFO
+
+
+case "$1" in 
+    start)
+        echo "Starting Cansel camera"
+        /usr/local/bin/cansel_camera &
+        ;;
+    stop)
+        echo "Stopping Cansel camera"
+        sudo killall mjpg_streamer
+        sudo killall time_lapse.sh
+        ;;
+restart)
+        echo "Stopping Cansel camera"
+        sudo killall mjpg_streamer
+        sudo killall time_lapse.sh
+		sleep 5
+        echo "Starting Cansel camera"
+        /usr/local/bin/cansel_camera &
+        ;;
+
+    *)
+        echo "Usage: /etc/init.d/cansel_camera start|stop|restart"
+        exit 1
+        ;;
+esac
+
+exit 0

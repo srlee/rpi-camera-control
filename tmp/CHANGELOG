@@ -1,0 +1,279 @@
+CHANGELOG
+Ver 1.0.79
+ - add copyright and gpl license
+
+Ver 1.0.78
+ - fix syntax error in crontab keeping all jobs from running
+
+Ver 1.0.77
+ - timelapse - change 95% to 75% disk used to  start deleting oldest
+ - timelapse - fix directory when deleting oldest pictures
+
+Ver 1.0.76
+ - make sure camera is on in config.txt
+ - make sure we have enough GPU in config.txt
+ - fix problem launching time lapse script
+
+Ver 1.0.75
+ - change input type on change password on settings page
+ - change shell password along with web and camera password
+
+Ver 1.0.74
+ - let user know it could take an hour for a system update
+ - fix config file afte upgrade to .72
+ - set default values for brightness, saturation etc if not set by user
+ - fix saving password on settings page
+ - ask user to change password on first launch
+
+Ver 1.0.73
+ - dropbox needs either ip or domain name fix code to send correct data depending on how user accessed site
+
+Ver 1.0.72
+ - overwrite conf.php new page added
+
+Ver 1.0.71
+ - add sync time option to cloud page
+ - add pi user to www-data group 
+ - change access to sandbox (app dir) in dropbox script 
+
+Ver 1.0.70
+ - fix permissions on cloud config
+ - add dependancy for cURL
+ - add upcloud cron job
+
+Ver 1.0.69
+ - add web page for cloud storage settings
+ - add backend code for cloud settings
+ - implement Dropbox cloud settings
+
+Ver 1.0.68
+ - fix starting time_lapse without su pass
+
+Ver 1.0.67
+ - treat config.php as deb config file so it is not overwritten
+ - remove some sudoers stuff from the postinst script not required anymore
+ - fix ssl site to use alias if required for USB storage
+ - move movies to it's own directory
+ - add alias for movies
+ - on restart sleep for a couple of seconds to make sure processes have stopped
+
+Ver 1.0.66
+ - fix warning in get_change_log
+
+Ver 1.0.65
+ - check to make sure file exists in latest_version function
+ - add restart to camera init script
+ - add exit code to cansel camera script
+ - add -b option to mjpg_streamer 
+ - simplify delete_images function
+ - fix Non-static method warning
+
+Ver 1.0.64
+ - treat mjpg-streamer.cfg as deb conf file so it is not overwritten on upgrade
+ - add flag to advanced settings to skip username and pass for reboot/shutdown etc.
+ - create sudoers files for relevent commands
+ - don't ask for username and pass if flag in advanced settings has been set
+ - if flag set on camera restart and sudoers not updated update it.
+
+Ver 1.0.63
+ - fix time lapse pic on home screen 
+ - getlatestimage was not using proper directory
+ - only display last 25 lines of changelog
+
+Ver 1.0.62
+ - fix install script alias in apache conf was wrong
+ - syntax error in camera php library
+
+Ver 1.0.61
+ - delete thumbnails when deleting time lapse pictures
+ - change time lapse setting to seconds from minutes (Minutes was too long)
+ - change time lapse script to seconds as well
+
+Ver 1.0.60
+ - added system update to admin menu
+
+Ver 1.0.59
+ - update packages to latest (only effects SD Image)
+ - update firmware to latest (only effects SD Image)
+ - create thumbnails of images for faster loading
+ - make connect button a bootstrap default button
+ - change timestamp on images from UTC to current timezone
+ - change button text from Make Movie to Create Video
+ - check for USB changes every minute instead of 2 minutes
+ - use root for cron jobs
+
+Ver 1.0.58
+ - fix delete functions for vid and images (use secure shell)
+ - fix upgrade button
+ - flush out images and add a pause so browser reponds (test code)
+ - add check_usb script to see if new USB device is mounted
+ - add info_message script to index.php
+ - on usb insert move data from SD to USB
+ - add message to web interface to inform user of data move
+ - cron job to check for usb insertion
+ - add alias for usb storage will be uncommented/commented when usb is mounted/unmounted in default apache conf
+ - add please wait for deleting images (can take a bit if deleting 100's of images)
+
+Ver 1.0.57
+ - fix bug in install/update script
+ - fix settings update script to add new vars
+
+Ver 1.0.56
+ - add button to create movie from time lapse stills
+ - create avi from time lapse pics
+ - move FULL_PATH to config as it is used in more than one place now
+ - display avi on images page as well as jpg's
+ - add delete video button on images page
+
+Ver 1.0.55
+ - replace /n with <br> for new messages
+ - make sure the % has been removed from diskspace in time_lapse script
+ - fix full_dir variable in time_lapse
+ - add page to display time lapse images (only display 100 at the moment)
+ - set theme on update button
+ - add button to delete time lapse images
+ - fix undefined var in camera lib
+ - time lapse was doing seconds not minutes
+
+Ver 1.0.54
+ - check before creating ssl directory during uprade/install
+ - fix script so wifi check only get's added once in crontab
+
+Ver 1.0.53
+ - only enable or disable modules if nessesary during install/upgrade
+ - time lapse - if disk get's full delete oldest picture
+
+Ver 1.0.52
+ - add flag to config to force ssl connection ( must be set manually)
+ - fix spelling of hostname
+
+Ver 1.0.51
+ - missed enabling ssl mod for apache in deb package
+Ver 1.0.50
+ - fix regex for outputing changelog etc.
+ - create cert and enable ssl on apache
+
+Ver 1.0.49
+ - apache tuning
+ - remove un-needed apache modules
+ - remove extra tty consoles
+
+Ver 1.0.48
+ - set default brightness to 50
+
+Ver 1.0.47
+ - apply bootstrap to snapshot button
+ - use the advanced options in init script
+
+Ver 1.0.46
+ - add advanced options table
+ - add saturtion, brightness, contrast, sharpness
+
+Ver 1.0.45
+ - bootstrap login form
+ - merge a couple of modals
+ - replace alert with a bootstrap modal
+
+Ver 1.0.44
+ - fixup upgrading and restart cam alerts
+ - fix spelling on rotation variable
+
+Ver 1.0.43
+ - add horizontal flip to settings
+ - add vertical flip to settings
+ - add rotation to settings
+
+Ver 1.0.42
+ - bootstrap the please wait dialog
+ - code cleanup
+ - shrink header a tad
+
+Ver 1.0.41
+ - fix reboot / shutdown etc not working when video is active
+
+Ver 1.0.40
+ - hook up time lapse scripts
+
+Ver 1.0.39
+ - change message to restart camera from reboot after a change to settings
+ - add settings for time lapse to web interface
+ - fix file permission for sudoer file
+
+Ver 1.0.38
+ - add wifi checker script
+ - add cron job to check wifi and re-enable if down 
+ - fix log directory for apache
+ - move variables out of time_lapse script into config file
+ - check if output directory exists for time_lapse if not create it
+ - add menu item to restart camera
+
+Ver 1.0.37
+ - fix menu items misplaced tag
+ - streamer had hardcoded port change to mjpg-streamer port
+ - fix a session problem that screwed up reboots and shutdowns (still problem on home screen)
+
+Ver 1.0.36
+ - fix file permissions problem new streamer
+
+Ver 1.0.35
+ - fix problem with reboot command
+ - set snapshot size based on video size
+
+Ver 1.0.34
+ - fix bug in postinst of debian package
+
+Ver 1.0.33 
+ - add streamer.php
+ - change mjpg-streamer input to input_raspicam 
+ - split resolution settings into width and height
+ - fix spelling error on password change message
+
+Ver 1.0.32
+ - change ownership of web stuff after install/upgrade
+
+Ver 1.0.31
+ - remove newline from ipv6 addresses in welcome
+ - add wlan rx/tx stats to details
+ - change alert-error to alert-danger so styles are applied
+ - add error handler if remote version file is not available
+ - fix video image for mobile
+
+Ver 1.0.30
+ - Move changelog to it's own function
+
+Ver 1.0.29
+ - Fixed a bug in the version checker , temp file not getting deleted every hour
+ - fix layout of root user login form
+ - fix bug in loading changelog
+
+Ver 1.0.28
+ - add change log to web output after upgrade
+ - add ipv6 address to welcome screen
+ - fix some css issues
+
+Ver 1.0.27
+ - only check online for latest ver every hour
+ - hide room temp and humidity if DHT-22 not installed
+
+Ver 1.0.26
+ - bug fixes
+	
+Ver 1.0.25
+ - add mod rewrite
+
+Ver 1.0.24
+- add ability to update mjpg-streamer settings from web interface
+- change password (keep password synced between web and streamer)
+
+Ver 1.0.23
+- update bootstrap to latest version
+- cleanup code for newest bootstrap
+- fix permissions on mjpg config file
+
+Ver 1.0.22
+- add credentials to video stream
+
+Ver 1.0.21
+- fixed security issue
+
+

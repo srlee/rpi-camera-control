@@ -1,0 +1,229 @@
+#!/bin/bash
+# config.txt stuff
+set_config_var() {
+  lua - "$1" "$2" "$3" <<EOF > "$3.bak"
+local key=assert(arg[1])
+local value=assert(arg[2])
+local fn=assert(arg[3])
+local file=assert(io.open(fn))
+local made_change=false
+for line in file:lines() do
+  if line:match("^#?%s*"..key.."=.*$") then
+    line=key.."="..value
+    made_change=true
+  end
+  print(line)
+end
+if not made_change then
+  print(key.."="..value)
+end
+EOF
+mv "$3.bak" "$3"
+}
+
+get_config_var() {
+  lua - "$1" "$2" <<EOF
+local key=assert(arg[1])
+local fn=assert(arg[2])
+local file=assert(io.open(fn))
+for line in file:lines() do
+  local val = line:match("^#?%s*"..key.."=(.*)$")
+  if (val ~= nil) then
+    print(val)
+    break
+  end
+end
+EOF
+}
+# enable camera
+set_config_var start_x 1 /boot/config.txt
+CUR_GPU_MEM=$(get_config_var gpu_mem /boot/config.txt)
+if [ -z "$CUR_GPU_MEM" ] || [ "$CUR_GPU_MEM" -lt 128 ]; then
+  set_config_var gpu_mem 128 /boot/config.txt
+fi
+# END config.txt stuff
+
+
+#symlink for gpio libary
+ln -sf /usr/local/lib/libwiringPi.so.2.0 /usr/local/lib/libwiringPi.so
+
+#Set inittab to auto login pi user
+grep -q "1:2345:respawn:/bin/login -f pi tty1 </dev/tty1 >/dev/tty1 2>&1 " /etc/inittab
+if [ $? -ne 0 ]; then
+  perl -pi -e 's/1:2345:respawn:\/sbin\/getty --noclear 38400 tty1/#1:2345:respawn:\/sbin\/getty --noclear 38400 tty1/' /etc/inittab  
+  echo "1:2345:respawn:/bin/login -f pi tty1 </dev/tty1 >/dev/tty1 2>&1 " >> /etc/inittab
+fi
+#remove unneeded tty consoles
+grep -q "#2:23:respawn:/sbin/getty 38400 tty2" /etc/inittab
+if [ $? -ne 0 ]; then
+  perl -pi -e 's/2:23:respawn:\/sbin\/getty 38400 tty2/#2:23:respawn:\/sbin\/getty 38400 tty2/' /etc/inittab  
+fi
+
+grep -q "#3:23:respawn:/sbin/getty 38400 tty3" /etc/inittab
+if [ $? -ne 0 ]; then
+  perl -pi -e 's/3:23:respawn:\/sbin\/getty 38400 tty3/#3:23:respawn:\/sbin\/getty 38400 tty3/' /etc/inittab  
+fi
+
+grep -q "#4:23:respawn:/sbin/getty 38400 tty4" /etc/inittab
+if [ $? -ne 0 ]; then
+  perl -pi -e 's/4:23:respawn:\/sbin\/getty 38400 tty4/#4:23:respawn:\/sbin\/getty 38400 tty4/' /etc/inittab  
+fi
+
+grep -q "#5:23:respawn:/sbin/getty 38400 tty5" /etc/inittab
+if [ $? -ne 0 ]; then
+  perl -pi -e 's/5:23:respawn:\/sbin\/getty 38400 tty5/#5:23:respawn:\/sbin\/getty 38400 tty5/' /etc/inittab  
+fi
+
+grep -q "#6:23:respawn:/sbin/getty 38400 tty6" /etc/inittab
+if [ $? -ne 0 ]; then
+  perl -pi -e 's/6:23:respawn:\/sbin\/getty 38400 tty6/#6:23:respawn:\/sbin\/getty 38400 tty6/' /etc/inittab  
+fi
+
+#set perms on sudoers.d files
+chown root: /etc/sudoers.d/dht22
+chmod 440 /etc/sudoers.d/dht22
+chown root: /etc/sudoers.d/camera
+chmod 440 /etc/sudoers.d/camera
+
+#Install Kernel Module
+grep -q "bcm2835-v4l2" /etc/modules
+if [ $? -ne 0 ]; then
+  echo "bcm2835-v4l2" >> /etc/modules
+fi
+#Install ipv6 Module
+grep -q "ipv6" /etc/modules
+if [ $? -ne 0 ]; then
+  echo "ipv6" >> /etc/modules
+fi
+
+# Perms for cansel Device web page
+chmod 740 /etc/cansel/database.aptmnt
+chown www-data:www-data /etc/cansel/database.aptmnt
+
+# Perms for mjpg streamer
+chmod 740 /etc/cansel/mjpg-streamer.cfg
+chown www-data:www-data /etc/cansel/mjpg-streamer.cfg
+
+# Perms for cloufd storage config
+chmod 740 /etc/cansel/cloud.cfg
+chown www-data:www-data /etc/cansel/cloud.cfg
+
+#perms for www pages
+chown -R www-data:pi /var/www/*
+
+# add web user to video group
+usermod -a -G video www-data
+
+# add pi user to www-data group 
+usermod -a -G www-data pi
+
+#disable apache 2 mods 
+if [ -f "/etc/apache2/mods-enabled/rewrite.load" ]; then
+	a2dismod rewrite
+fi
+if [ -f "/etc/apache2/mods-enabled/status.load" ]; then
+	a2dismod status
+fi
+if [ -f "/etc/apache2/mods-enabled/negotiation.load" ]; then
+	a2dismod negotiation
+fi
+if [ -f "/etc/apache2/mods-enabled/env.load" ]; then
+	a2dismod env
+fi
+if [ -f "/etc/apache2/mods-enabled/authz_groupfile.load" ]; then
+	a2dismod authz_groupfile
+fi
+if [ -f "/etc/apache2/mods-enabled/authz_default.load" ]; then
+	a2dismod authz_default
+fi
+if [ -f "/etc/apache2/mods-enabled/auth_basic.load" ]; then
+	a2dismod auth_basic
+fi
+if [ -f "/etc/apache2/mods-enabled/authn_file.load" ]; then
+	a2dismod authn_file
+fi
+if [ -f "/etc/apache2/mods-enabled/authz_user.load" ]; then
+	a2dismod authz_user
+fi
+
+# enable ssl for apache
+if [ ! -d "/etc/apache2/ssl" ]; then
+	mkdir /etc/apache2/ssl
+fi
+grep -q "/etc/apache2/ssl/server.crt" /etc/inittab
+if [ ! -f "/etc/apache2/ssl/server.crt" ]; then
+	if [ ! -f "/etc/apache2/mods-enabled/ssl.load" ]; then
+		a2enmod ssl
+	fi
+	openssl req -new -newkey rsa:4096 -days 1095 -nodes -x509 -subj "/C=CA/ST=Ontario/L=Markham/O=Dis/CN=pi-cam1" -keyout /etc/apache2/ssl/server.key -out /etc/apache2/ssl/server.crt
+
+	perl -pi -e 's/\/etc\/ssl\/certs\/ssl-cert-snakeoil.pem/\/etc\/apache2\/ssl\/server.crt/' /etc/apache2/sites-available/default-ssl  
+	perl -pi -e 's/\/etc\/ssl\/private\/ssl-cert-snakeoil.key/\/etc\/apache2\/ssl\/server.key/' /etc/apache2/sites-available/default-ssl  
+	if [ ! -f "/etc/apache2/sites-enabled/default-ssl" ]; then
+		a2ensite default-ssl
+	fi
+fi
+# alias setup for pictures and movies directories
+# add alias for usb storage will be uncommented when usb is mounted
+grep -q "alias" /etc/apache2/sites-available/default
+if [ $? -ne 0 ]; then
+ cp /etc/apache2/sites-available/default /etc/apache2/sites-available/default.bak
+ sed '2i\ #alias \/pictures \/media\/usb0\/pictures' /etc/apache2/sites-available/default.bak > /etc/apache2/sites-available/default
+fi
+# check ssl site as well
+grep -q "alias" /etc/apache2/sites-available/default-ssl
+if [ $? -ne 0 ]; then
+ cp /etc/apache2/sites-available/default-ssl /etc/apache2/sites-available/default-ssl.bak
+ sed '3i\ #alias \/pictures \/media\/usb0\/pictures' /etc/apache2/sites-available/default-ssl.bak > /etc/apache2/sites-available/default-ssl
+fi
+# Movies
+grep -q "alias \/movies" /etc/apache2/sites-available/default
+if [ $? -ne 0 ]; then
+ cp /etc/apache2/sites-available/default /etc/apache2/sites-available/default.bak
+ sed '2i\ #alias \/movies \/media\/usb0\/movies' /etc/apache2/sites-available/default.bak > /etc/apache2/sites-available/default
+fi
+# check ssl site as well
+grep -q "alias \/movies" /etc/apache2/sites-available/default-ssl
+if [ $? -ne 0 ]; then
+ cp /etc/apache2/sites-available/default-ssl /etc/apache2/sites-available/default-ssl.bak
+ sed '3i\ #alias \/movies \/media\/usb0\/movies' /etc/apache2/sites-available/default-ssl.bak > /etc/apache2/sites-available/default-ssl
+fi
+#allow simple passwords
+grep -q "sha512 minlen=4" /etc/pam.d/common-password
+if [ $? -ne 0 ]; then
+	perl -pi -e "s/sha512/sha512 minlen=4/g" /etc/pam.d/common-password
+	perl -pi -e "s/obscure/ /g" /etc/pam.d/common-password
+fi
+#delete unused directory
+if [ -d "/home/pi/canselcamera" ]; then
+	rm -rf "/home/pi/canselcamera"
+fi
+if [ -f "/var/www/css/bootstrap-responsive.min.css" ]; then
+    rm -rf "/var/www/css/bootstrap-responsive.min.css"
+fi
+if [ -f "/var/www/settings.php" ]; then
+    rm -rf "/var/www/settings.php"
+fi
+#enable wifi checker
+grep -q "wifi_check" /etc/crontab
+if [ $? -ne 0 ]; then
+  echo "*/5 * * * * root /usr/local/bin/wifi_check" >> /etc/crontab
+fi
+#fix mistake from ealier version
+grep -q "*/ * * * * root /usr/local/bin/cloud_cron_check" /etc/crontab
+if [ $? -ne 0 ]; then
+  perl -pi -e "s/\*\/ /\*\/15 /g" /etc/crontab
+fi
+
+#enable usb checker
+grep -q "usb_cron_check" /etc/crontab
+if [ $? -ne 0 ]; then
+  echo "*/1 * * * * root /usr/local/bin/usb_cron_check" >> /etc/crontab
+fi
+#cloud uploader
+grep -q "cloud_cron" /etc/crontab
+if [ $? -ne 0 ]; then
+  echo "*/15 * * * * root /usr/local/bin/cloud_cron_check" >> /etc/crontab
+fi
+
+

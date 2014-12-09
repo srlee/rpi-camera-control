@@ -1,0 +1,38 @@
+#!/bin/bash
+#
+#  Raspberry Pi Camera Control Software
+#  Copyright (C) 2014 Cansel Software Limited
+#
+#   This program is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation, either version 3 of the License, or
+#    any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#
+#
+getip()
+{
+	IP=$(ip addr | grep -v 127.0.0.1 | sed -e's/^.*inet \([^ ]*\)\/.*$/\1/;t;d')
+	IPV6=$( ip -6 addr | grep -v ::1 | sed -e's/^.*inet6 \([^ ]*\)\/.*$/\1/;t;d')
+}
+
+
+getip;
+
+IPV6=$(echo $IPV6|tr -d '\n')
+
+TITLE="RPi Camera Device Information"
+CURRENT_IP="Your Current IP is ${IP} \n\n Your Current IPV6 is ${IPV6}\n\n To access the camera web page http://$IP/\n\n"
+CAM="TO access the video stream http://$IP:10088/?action=stream\n\n"
+SUPPORT="To purchase support please visit http://shop.canselsoftware.com \n\n"
+CONFIG="To setup wifi or change other system settings run 'sudo cansel-config'"
+whiptail --title "$TITLE" --msgbox "$WELCOME $CURRENT_IP $CAM $SUPPORT $CONFIG" 15 78
+

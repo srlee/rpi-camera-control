@@ -1,7 +1,7 @@
 rpi-camera-control
 ==================
 
-Raspberry Pi Camera Control Software
+Raspberry Pi Camera Control Software is a collection of scripts and php that allow you to access  most settings of the raspberry pi Camera through a web interface.
 
 RPI Camera – Feature List
 Camera Settings

@@ -1,7 +1,9 @@
 rpi-camera-control
 ==================
 
-Raspberry Pi Camera Control Software
+Raspberry Pi Camera Control Software is a collection of scripts and php that allow you to access  most settings of the raspberry pi camera through a web interface. 
+
+Giving you the ability to control video capture for time lapsed photography that converts directly to video files with a single command. Move storage to USB just by plugging in any USB storage device. Run streaming video with user selectable frame rates or just take snap shots like a still camera.
 
 RPI Camera – Feature List
 Camera Settings

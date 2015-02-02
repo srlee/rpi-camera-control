@@ -1,23 +1,5 @@
 <?php
-#
-#  Raspberry Pi Camera Control Software
-#  Copyright (C) 2014 Cansel Software Limited
-#
-#   This program is free software: you can redistribute it and/or modify
-#   it under the terms of the GNU General Public License as published by
-#   the Free Software Foundation, either version 3 of the License, or
-#    any later version.
-#
-#   This program is distributed in the hope that it will be useful,
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#   GNU General Public License for more details.
-#
-#   You should have received a copy of the GNU General Public License
-#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-#
-#
+
 namespace lib;
 
 require_once 'lib/phpseclib/Net/SSH2.php';
@@ -103,16 +85,16 @@ class Camera {
 		{
 			$fh = fopen("http://downloads.canselsoftware.com/canselcamera/version.php", "r");
 			if (!$fh) {
-				$_SESSION['message'] = "Unable to open remote version file.";
-				exit;
-			}
-			$string = fgets($fh, 10);
-			fclose($fh);  
+				$_SESSION['info_message'] = "Unable to open remote version file. Please check your network and DNS settings";
+			}else {
+				$string = fgets($fh, 10);
+				fclose($fh);  
 		
-			// write a copy to temp and use it for an hour or so
-        	$handler = fopen(Camera::$ver_file, 'w');
-        	fwrite($handler, $string);
-        	fclose($handler);
+				// write a copy to temp and use it for an hour or so
+	        	$handler = fopen(Camera::$ver_file, 'w');
+	        	fwrite($handler, $string);
+	        	fclose($handler);
+			}
 		} else {
         	$fh = fopen(Camera::$ver_file, 'r');
 			$string = fgets($fh, 10);

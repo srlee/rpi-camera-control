@@ -1,4 +1,14 @@
 CHANGELOG
+Ver 1.0.81
+ - fix symlink for libwiringpi
+
+Ver 1.0.80
+ - fix network error 
+ - update copyright notice 
+ - update GPIO code
+ - update dht22 driver
+ - update SD zip file to latest raspbian build
+
 Ver 1.0.79
  - add copyright and gpl license
 

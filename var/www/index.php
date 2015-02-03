@@ -1,5 +1,5 @@
-
 <?php
+namespace lib;
 #
 #  Raspberry Pi Camera Control Software
 #  Copyright (C) 2013-2015 Cansel Software Limited
@@ -19,7 +19,6 @@
 #
 #
 #
-namespace lib;
 
 spl_autoload_extensions('.php');
 spl_autoload_register();

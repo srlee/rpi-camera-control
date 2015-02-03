@@ -45,7 +45,7 @@ fi
 
 
 #symlink for gpio libary
-ln -sf /usr/local/lib/libwiringPi.so.2.0 /usr/local/lib/libwiringPi.so
+ln -sf /usr/local/lib/libwiringPi.so.2.24 /usr/local/lib/libwiringPi.so
 
 #Set inittab to auto login pi user
 grep -q "1:2345:respawn:/bin/login -f pi tty1 </dev/tty1 >/dev/tty1 2>&1 " /etc/inittab
